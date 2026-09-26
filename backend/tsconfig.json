@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    "target": "es2024",
+    "module": "nodenext",
+    "moduleResolution": "node16",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true
+  },
+
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
