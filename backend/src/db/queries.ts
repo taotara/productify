@@ -1,4 +1,4 @@
-import { db } from "./index.js";
+import { db } from "./index.ts";
 import { eq } from "drizzle-orm";
 import {
   users,
@@ -7,7 +7,7 @@ import {
   type NewUser,
   type NewComment,
   type NewProduct,
-} from "./schema.js";
+} from "./schema.ts";
 
 // USER QUERIES
 export const createUser = async (data: NewUser) => {
@@ -20,6 +20,10 @@ export const getUserById = async (id: string) => {
 };
 
 export const updateUser = async (id: string, data: Partial<NewUser>) => {
+    const existingUser = await getUserById(id);
+    if (!existingUser) {
+        throw new Error(`User with id ${id} not found`);
+    }
   const [user] = await db
     .update(users)
     .set(data)
@@ -30,10 +34,16 @@ export const updateUser = async (id: string, data: Partial<NewUser>) => {
 
 // Upsert will either create or update
 export const upsertUser = async (data: NewUser) => {
-  const existingUser = await getUserById(data.id);
-  if (existingUser) return updateUser(data.id, data);
+//   const existingUser = await getUserById(data.id);
+//   if (existingUser) return updateUser(data.id, data);
 
-  return createUser(data);
+//   return createUser(data);
+
+const [user] = await db.insert(users).values(data).onConflictDoUpdate({
+    target: users.id,
+    set: data,
+}).returning();
+return user;
 };
 
 // PRODUCT QUERIES

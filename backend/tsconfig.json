@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    // "allowImportingTsExtensions": true,
     "rootDir": "./src",
     "outDir": "./dist",
 
